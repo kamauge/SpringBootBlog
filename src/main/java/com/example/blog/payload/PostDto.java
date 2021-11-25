@@ -3,15 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.blog.repository;
+package com.example.blog.payload;
 
-import com.example.blog.entity.Post;
-import org.springframework.data.jpa.repository.JpaRepository;
+import lombok.Data;
 
 /**
  *
  * @author Gerald.Kamau
  */
-public interface PostRepository extends JpaRepository<Post,Long> {
+@Data
+public class PostDto {
+    private long id;
+    private String title;
+    private String description;
+    private String content;
     
 }
