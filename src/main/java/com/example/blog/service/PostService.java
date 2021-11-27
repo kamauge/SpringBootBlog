@@ -6,6 +6,7 @@
 package com.example.blog.service;
 
 import com.example.blog.payload.PostDto;
+import com.example.blog.payload.PostResponse;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public interface PostService {
     
    public PostDto createPost(PostDto postDto);
    
-   public List<PostDto> getPosts();
+   public PostResponse getPosts(int pageNo,int pageSize);
    
    public PostDto getOnePost(long id);
   

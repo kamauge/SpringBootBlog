@@ -8,6 +8,7 @@ package com.example.blog.service.impl;
 import com.example.blog.entity.Post;
 import com.example.blog.exception.ResourceNotFoundException;
 import com.example.blog.payload.PostDto;
+import com.example.blog.payload.PostResponse;
 import com.example.blog.repository.PostRepository;
 import com.example.blog.service.PostService;
 import java.util.List;
@@ -15,6 +16,9 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -43,10 +47,26 @@ public class PostServiceImplementation implements PostService {
     }
 
     @Override
-    public List<PostDto> getPosts() {
+    public PostResponse getPosts(int pageNo,int pageSize) {
+        
+        //Create pageable instance
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Post> posts = postRepository.findAll(pageable);
 
-        List<Post> posts = postRepository.findAll();
-        return posts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+        List<Post> listOfPosts = posts.getContent();
+        List<PostDto> content = listOfPosts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+        
+        PostResponse postResponse = new PostResponse();
+        postResponse.setSuccess(true);
+        postResponse.setContent(content);
+        postResponse.setPageNo(posts.getNumber());
+        postResponse.setPageSize(posts.getSize());
+        postResponse.setTotalElements(posts.getTotalElements());
+        postResponse.setTotalPages(posts.getTotalPages());
+        postResponse.setLast(posts.isLast());
+        
+        return postResponse;
+        
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

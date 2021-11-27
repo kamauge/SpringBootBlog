@@ -6,6 +6,7 @@
 package com.example.blog.controller;
 
 import com.example.blog.payload.PostDto;
+import com.example.blog.payload.PostResponse;
 import com.example.blog.service.impl.PostServiceImplementation;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,11 @@ public class PostController {
     }
 
     @GetMapping
-    public List<PostDto> getPosts(
+    public PostResponse getPosts(
             @RequestParam(value="pageNo",defaultValue = "0",required=false)int pageNo,
             @RequestParam(value="pageSize",defaultValue ="10",required=false) int pageSize)
     {
-        return postServiceImplementation.getPosts();
+        return postServiceImplementation.getPosts(pageNo,pageSize);
     }
 
     @GetMapping("/{id}")
